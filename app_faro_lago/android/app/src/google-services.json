@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "942388985839",
+    "project_id": "app-faro-lago",
+    "storage_bucket": "app-faro-lago.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942388985839:android:b96b4ac19452bd01c6801a",
+        "android_client_info": {
+          "package_name": "com.example.app_faro_lago"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942388985839-gabge9a0b9f830be5r6ip9nltfvrlh9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPsZqT808jvwHlZCiDMYCQ4trfkrHFXbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942388985839-gabge9a0b9f830be5r6ip9nltfvrlh9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

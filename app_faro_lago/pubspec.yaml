@@ -1,0 +1,53 @@
+name: app_faro_lago
+description: App de administración de fincas
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  firebase_storage: ^10.3.1
+  firebase_auth: ^3.4.1
+  firebase_database: ^9.0.18
+  firebase_core: ^1.19.1
+  modal_progress_hud_nsn: ^0.1.0-nullsafety-0
+  flutter_datetime_picker:
+    git:
+      url: https://github.com/AlexHartford/flutter_datetime_picker.git
+      ref: master
+  rflutter_alert: ^2.0.4
+  flutter_launcher_icons: ^0.9.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^1.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/FaroLogo1.jpg"
+
+flutter:
+
+  uses-material-design: true
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - images/
+  fonts:
+    - family: Lobster
+      fonts:
+        - asset: fonts/Lobster-Regular.ttf
+    - family: Rubik
+      fonts:
+        - asset: fonts/Rubik-Italic-VariableFont_wght.ttf
+        - asset: fonts/Rubik-VariableFont_wght.ttf
+          weight: 400
+
