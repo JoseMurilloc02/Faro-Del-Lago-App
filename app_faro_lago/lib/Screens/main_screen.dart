@@ -70,337 +70,343 @@ class _MainScreenState extends State<MainScreen> {
 
   void getAnimalData() async {
     String? userUID = currentUser?.uid;
-    var snapshot = await ref.child(userUID!).child("RegistroAnimales").get();
-    //print(snapshot.value);
-    Map<dynamic, dynamic> animals = snapshot.value as Map<dynamic, dynamic>;
-    animals.forEach((key, value) {
-      if (value["tipoAnimal"] == "Vaca") {
-        Map codeTernero = value["CantidadTerneros"];
-        final animalCard = AnimalCard(
-            color: kGrey,
-            borderRadius: 15.0,
-            description: [
-              Text(
-                "Código: $key",
-                style: kSubTextWhite,
-                textScaleFactor: .9,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "Tipo de animal: ${value["tipoAnimal"]}",
-                style: kSubTextWhite,
-                textScaleFactor: .9,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "Ternero: ${codeTernero.values.first}",
-                style: kSubTextWhite,
-                textScaleFactor: 1.0,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "Días embarazo: ${calculatePregnant(int.parse(value["díasEmbarazo"].toString()), value["visitaMédico"].toString())}",
-                style: kSubTextWhite,
-                textScaleFactor: 1.0,
-                textAlign: TextAlign.start,
-              ),
-            ],
-            onPressed: () {
-              Alert(
-                title: "Descripción general",
-                style: AlertStyle(
-                  alertPadding: const EdgeInsets.all(10),
-                  isCloseButton: false,
-                  isButtonVisible: false,
-                  overlayColor: kGrey.withOpacity(0.5),
-                  backgroundColor: kGrey,
-                  alertBorder: const ContinuousRectangleBorder(
-                    side: BorderSide(color: kRed, width: 3),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                      topLeft: Radius.circular(15),
+    await ref
+        .child(userUID!)
+        .child("RegistroAnimales")
+        .orderByChild("code")
+        .once()
+        .then((DatabaseEvent snapshot) {
+      for (var value in snapshot.snapshot.children) {
+        print(value.value);
+        Map animalData = value.value as Map;
+        if (animalData["tipoAnimal"] == "Vaca") {
+          Map codeTernero = animalData["CantidadTerneros"];
+          final animalCard = AnimalCard(
+              color: kGrey,
+              borderRadius: 15.0,
+              description: [
+                Text(
+                  "Código: ${animalData["code"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
+                ),
+                Text(
+                  "Tipo de animal: ${animalData["tipoAnimal"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
+                ),
+                Text(
+                  "Ternero: ${codeTernero.values.first}",
+                  style: kSubTextWhite,
+                  textScaleFactor: 1.0,
+                  textAlign: TextAlign.start,
+                ),
+                Text(
+                  "Días embarazo: ${calculatePregnant(int.parse(animalData["díasEmbarazo"].toString()), animalData["visitaMédico"].toString())}",
+                  style: kSubTextWhite,
+                  textScaleFactor: 1.0,
+                  textAlign: TextAlign.start,
+                ),
+              ],
+              onPressed: () {
+                Alert(
+                  title: "Descripción general",
+                  style: AlertStyle(
+                    alertPadding: const EdgeInsets.all(10),
+                    isCloseButton: false,
+                    isButtonVisible: false,
+                    overlayColor: kGrey.withOpacity(0.5),
+                    backgroundColor: kGrey,
+                    alertBorder: const ContinuousRectangleBorder(
+                      side: BorderSide(color: kRed, width: 3),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                        topLeft: Radius.circular(15),
+                      ),
+                    ),
+                    titleStyle: kSubTextWhite,
+                    descStyle: kSubTextWhite,
+                  ),
+                  content: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Código animal: ${animalData["code"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Tipo de animal: ${animalData["tipoAnimal"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Ternero: ${codeTernero.values.first} \n Fecha de nacimiento ternero: ${codeTernero.keys.first}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Fecha de ingreso: ${animalData["FechaIngreso"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Cantidad de partos: ${animalData["NumeroPartos"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Días de embarazo: ${calculatePregnant(int.parse(animalData["díasEmbarazo"].toString()), animalData["visitaMédico"].toString())}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Ultima fecha de Parto: ${animalData["fechaParto"].first}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Ultima visita médico: ${animalData["visitaMédico"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  titleStyle: kSubTextWhite,
-                  descStyle: kSubTextWhite,
+                  context: context,
+                ).show();
+              });
+          setState(() {
+            listAnimals.add(animalCard);
+          });
+        } else if (animalData["tipoAnimal"] == "Ternero") {
+          final animalCard = AnimalCard(
+              color: kGrey,
+              borderRadius: 15.0,
+              description: [
+                Text(
+                  "Código: ${animalData["code"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
                 ),
-                content: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Código animal: $key",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Tipo de animal: ${value["tipoAnimal"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Ternero: ${codeTernero.values.first} \n Fecha de nacimiento ternero: ${codeTernero.keys.first}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Fecha de ingreso: ${value["FechaIngreso"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Cantidad de partos: ${value["NumeroPartos"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Días de embarazo: ${calculatePregnant(int.parse(value["díasEmbarazo"].toString()), value["visitaMédico"].toString())}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Ultima fecha de Parto: ${value["fechaParto"].first}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Ultima visita médico: ${value["visitaMédico"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                      ],
+                Text(
+                  "Tipo de animal: ${animalData["tipoAnimal"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
+                ),
+                Text(
+                  "Sexo: ${animalData["sexoTernero"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
+                ),
+                Text(
+                  "Código Madre: ${animalData["codigoMadre"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
+                ),
+              ],
+              onPressed: () {
+                Alert(
+                  title: "Descripción general",
+                  style: AlertStyle(
+                    alertPadding: const EdgeInsets.all(10),
+                    isCloseButton: false,
+                    isButtonVisible: false,
+                    overlayColor: kGrey.withOpacity(0.5),
+                    backgroundColor: kGrey,
+                    alertBorder: const ContinuousRectangleBorder(
+                      side: BorderSide(color: kRed, width: 3),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                        topLeft: Radius.circular(15),
+                      ),
+                    ),
+                    titleStyle: kSubTextWhite,
+                    descStyle: kSubTextWhite,
+                  ),
+                  content: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Código animal: ${animalData["code"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Tipo de animal: ${animalData["tipoAnimal"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Nacimiento: ${animalData["FechaIngreso"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Código Madre: ${animalData["codigoMadre"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                            textAlign: TextAlign.start,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Sexo: ${animalData["sexoTernero"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                            textAlign: TextAlign.start,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Ultima visita médico: ${animalData["visitaMédico"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  context: context,
+                ).show();
+              });
+          setState(() {
+            listAnimals.add(animalCard);
+          });
+        } else {
+          final animalCard = AnimalCard(
+              color: kGrey,
+              borderRadius: 15.0,
+              description: [
+                Text(
+                  "Código: ${animalData["code"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
                 ),
-                context: context,
-              ).show();
-            });
-        setState(() {
-          listAnimals.add(animalCard);
-        });
-      } else if (value["tipoAnimal"] == "Ternero") {
-        final animalCard = AnimalCard(
-            color: kGrey,
-            borderRadius: 15.0,
-            description: [
-              Text(
-                "Código: $key",
-                style: kSubTextWhite,
-                textScaleFactor: .9,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "Tipo de animal: ${value["tipoAnimal"]}",
-                style: kSubTextWhite,
-                textScaleFactor: .9,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "Sexo: ${value["sexoTernero"]}",
-                style: kSubTextWhite,
-                textScaleFactor: .9,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "Código Madre: ${value["codigoMadre"]}",
-                style: kSubTextWhite,
-                textScaleFactor: .9,
-                textAlign: TextAlign.start,
-              ),
-            ],
-            onPressed: () {
-              Alert(
-                title: "Descripción general",
-                style: AlertStyle(
-                  alertPadding: const EdgeInsets.all(10),
-                  isCloseButton: false,
-                  isButtonVisible: false,
-                  overlayColor: kGrey.withOpacity(0.5),
-                  backgroundColor: kGrey,
-                  alertBorder: const ContinuousRectangleBorder(
-                    side: BorderSide(color: kRed, width: 3),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                      topLeft: Radius.circular(15),
+                Text(
+                  "Tipo de animal: ${animalData["tipoAnimal"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
+                ),
+              ],
+              onPressed: () {
+                Alert(
+                  title: "Descripción general",
+                  style: AlertStyle(
+                    alertPadding: const EdgeInsets.all(10),
+                    isCloseButton: false,
+                    isButtonVisible: false,
+                    overlayColor: kGrey.withOpacity(0.5),
+                    backgroundColor: kGrey,
+                    alertBorder: const ContinuousRectangleBorder(
+                      side: BorderSide(color: kRed, width: 3),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                        topLeft: Radius.circular(15),
+                      ),
+                    ),
+                    titleStyle: kSubTextWhite,
+                    descStyle: kSubTextWhite,
+                  ),
+                  content: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Código animal: ${animalData["tipoAnimal"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Tipo de animal: ${animalData["tipoAnimal"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Fecha de ingreso finca: ${animalData["FechaIngreso"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Ultima visita médico: ${animalData["visitaMédico"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  titleStyle: kSubTextWhite,
-                  descStyle: kSubTextWhite,
-                ),
-                content: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Código animal: $key",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Tipo de animal: ${value["tipoAnimal"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Nacimiento: ${value["FechaIngreso"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Código Madre: ${value["codigoMadre"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                          textAlign: TextAlign.start,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Sexo: ${value["sexoTernero"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                          textAlign: TextAlign.start,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Ultima visita médico: ${value["visitaMédico"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                context: context,
-              ).show();
-            });
-        setState(() {
-          listAnimals.add(animalCard);
-        });
-      } else {
-        final animalCard = AnimalCard(
-            color: kGrey,
-            borderRadius: 15.0,
-            description: [
-              Text(
-                "Código: $key",
-                style: kSubTextWhite,
-                textScaleFactor: .9,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "Tipo de animal: ${value["tipoAnimal"]}",
-                style: kSubTextWhite,
-                textScaleFactor: .9,
-                textAlign: TextAlign.start,
-              ),
-            ],
-            onPressed: () {
-              Alert(
-                title: "Descripción general",
-                style: AlertStyle(
-                  alertPadding: const EdgeInsets.all(10),
-                  isCloseButton: false,
-                  isButtonVisible: false,
-                  overlayColor: kGrey.withOpacity(0.5),
-                  backgroundColor: kGrey,
-                  alertBorder: const ContinuousRectangleBorder(
-                    side: BorderSide(color: kRed, width: 3),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                      topLeft: Radius.circular(15),
-                    ),
-                  ),
-                  titleStyle: kSubTextWhite,
-                  descStyle: kSubTextWhite,
-                ),
-                content: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Código animal: $key",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Tipo de animal: ${value["tipoAnimal"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Fecha de ingreso finca: ${value["FechaIngreso"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Ultima visita médico: ${value["visitaMédico"]}",
-                          style: kSubTextWhite,
-                          textScaleFactor: .9,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                context: context,
-              ).show();
-            });
-        setState(() {
-          listAnimals.add(animalCard);
-        });
+                  context: context,
+                ).show();
+              });
+          setState(() {
+            listAnimals.add(animalCard);
+          });
+        }
       }
     });
   }
@@ -411,32 +417,33 @@ class _MainScreenState extends State<MainScreen> {
     getAnimalData();
     String? userUID = currentUser?.uid;
     //TODO: ELIMINATE THIS LISTENER AND MAKE THE CARD FROM THE UPLOAD BUTTON
-    _animalSubscription =
-        ref.child(userUID!).child("RegistroAnimales").onValue.listen((event) {
-      var newListOfAnimals = event.snapshot.value;
+    _animalSubscription = ref
+        .child(userUID!)
+        .child("RegistroAnimales")
+        .orderByChild("code")
+        .onValue
+        .listen((event) {
       if (firstStream) {
         firstStream = false;
       } else {
-        //print(newListOfAnimals);
         listAnimals.clear();
-        Map<dynamic, dynamic> animals =
-            newListOfAnimals as Map<dynamic, dynamic>;
-        animals.forEach((key, value) {
-          if (value["tipoAnimal"] == "Vaca") {
-            //print(value["CantidadTerneros"]);
-            Map codeTernero = value["CantidadTerneros"];
+        for (var value in event.snapshot.children) {
+          print(value.value);
+          Map animalData = value.value as Map;
+          if (animalData["tipoAnimal"] == "Vaca") {
+            Map codeTernero = animalData["CantidadTerneros"];
             final animalCard = AnimalCard(
                 color: kGrey,
                 borderRadius: 15.0,
                 description: [
                   Text(
-                    "Código: $key",
+                    "Código: ${animalData["code"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "Tipo de animal: ${value["tipoAnimal"]}",
+                    "Tipo de animal: ${animalData["tipoAnimal"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
@@ -448,7 +455,7 @@ class _MainScreenState extends State<MainScreen> {
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "Días embarazo: ${calculatePregnant(int.parse(value["díasEmbarazo"].toString()), value["visitaMédico"].toString())}",
+                    "Días embarazo: ${calculatePregnant(int.parse(animalData["díasEmbarazo"].toString()), animalData["visitaMédico"].toString())}",
                     style: kSubTextWhite,
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.start,
@@ -482,7 +489,7 @@ class _MainScreenState extends State<MainScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Código animal: $key",
+                              "Código animal: ${animalData["code"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -490,7 +497,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Tipo de animal: ${value["tipoAnimal"]}",
+                              "Tipo de animal: ${animalData["tipoAnimal"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -498,7 +505,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Ternero: ${codeTernero.values.first} Fecha de nacimiento: ${codeTernero.keys.first}",
+                              "Ternero: ${codeTernero.values.first} \n Fecha de nacimiento ternero: ${codeTernero.keys.first}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -506,7 +513,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Fecha de ingreso: ${value["FechaIngreso"]}",
+                              "Fecha de ingreso: ${animalData["FechaIngreso"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -514,7 +521,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Cantidad de partos: ${value["NumeroPartos"]}",
+                              "Cantidad de partos: ${animalData["NumeroPartos"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -522,7 +529,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Días de embarazo: ${calculatePregnant(int.parse(value["díasEmbarazo"].toString()), value["visitaMédico"].toString())}",
+                              "Días de embarazo: ${calculatePregnant(int.parse(animalData["díasEmbarazo"].toString()), animalData["visitaMédico"].toString())}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -530,7 +537,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Ultima fecha de Parto: ${value["fechaParto"]}",
+                              "Ultima fecha de Parto: ${animalData["fechaParto"].first}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -538,7 +545,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Ultima visita médico: ${value["visitaMédico"]}",
+                              "Ultima visita médico: ${animalData["visitaMédico"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -552,31 +559,31 @@ class _MainScreenState extends State<MainScreen> {
             setState(() {
               listAnimals.add(animalCard);
             });
-          } else if (value["tipoAnimal"] == "Ternero") {
+          } else if (animalData["tipoAnimal"] == "Ternero") {
             final animalCard = AnimalCard(
                 color: kGrey,
                 borderRadius: 15.0,
                 description: [
                   Text(
-                    "Código: $key",
+                    "Código: ${animalData["code"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "Tipo de animal: ${value["tipoAnimal"]}",
+                    "Tipo de animal: ${animalData["tipoAnimal"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "Sexo: ${value["sexoTernero"]}",
+                    "Sexo: ${animalData["sexoTernero"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "Código Madre: ${value["codigoMadre"]}",
+                    "Código Madre: ${animalData["codigoMadre"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
@@ -610,7 +617,7 @@ class _MainScreenState extends State<MainScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Código animal: $key",
+                              "Código animal: ${animalData["code"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -618,7 +625,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Tipo de animal: ${value["tipoAnimal"]}",
+                              "Tipo de animal: ${animalData["tipoAnimal"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -626,7 +633,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Nacimiento: ${value["FechaIngreso"]}",
+                              "Nacimiento: ${animalData["FechaIngreso"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -634,16 +641,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Código Madre: ${value["codigoMadre"]}",
-                              style: kSubTextWhite,
-                              textScaleFactor: .9,
-                              textAlign: TextAlign.start,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "Sexo: ${value["sexoTernero"]}",
+                              "Código Madre: ${animalData["codigoMadre"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                               textAlign: TextAlign.start,
@@ -652,7 +650,16 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Ultima visita médico: ${value["visitaMédico"]}",
+                              "Sexo: ${animalData["sexoTernero"]}",
+                              style: kSubTextWhite,
+                              textScaleFactor: .9,
+                              textAlign: TextAlign.start,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Ultima visita médico: ${animalData["visitaMédico"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -672,13 +679,13 @@ class _MainScreenState extends State<MainScreen> {
                 borderRadius: 15.0,
                 description: [
                   Text(
-                    "Código: $key",
+                    "Código: ${animalData["code"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "Tipo de animal: ${value["tipoAnimal"]}",
+                    "Tipo de animal: ${animalData["tipoAnimal"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
@@ -712,7 +719,7 @@ class _MainScreenState extends State<MainScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Código animal: $key",
+                              "Código animal: ${animalData["tipoAnimal"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -720,7 +727,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Tipo de animal: ${value["tipoAnimal"]}",
+                              "Tipo de animal: ${animalData["tipoAnimal"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -728,7 +735,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Fecha de ingreso finca: ${value["FechaIngreso"]}",
+                              "Fecha de ingreso finca: ${animalData["FechaIngreso"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -736,7 +743,7 @@ class _MainScreenState extends State<MainScreen> {
                               height: 20,
                             ),
                             Text(
-                              "Ultima visita médico: ${value["visitaMédico"]}",
+                              "Ultima visita médico: ${animalData["visitaMédico"]}",
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
@@ -751,7 +758,7 @@ class _MainScreenState extends State<MainScreen> {
               listAnimals.add(animalCard);
             });
           }
-        });
+        }
       }
     });
     super.initState();
@@ -1494,6 +1501,8 @@ class _MainScreenState extends State<MainScreen> {
                                                 .child(animalCodeController
                                                     .value.text)
                                                 .set({
+                                              "code": animalCodeController
+                                                  .value.text,
                                               "tipoAnimal": animalType,
                                               "NumeroPartos":
                                                   partosCodeController
@@ -1622,6 +1631,8 @@ class _MainScreenState extends State<MainScreen> {
                                                   .child(animalCodeController
                                                       .value.text)
                                                   .set({
+                                                "code": animalCodeController
+                                                    .value.text,
                                                 "tipoAnimal": animalType,
                                                 "FechaIngreso": dateCow,
                                                 "visitaMédico":
@@ -1641,6 +1652,8 @@ class _MainScreenState extends State<MainScreen> {
                                                 .child(animalCodeController
                                                     .value.text)
                                                 .set({
+                                              "code": animalCodeController
+                                                  .value.text,
                                               "tipoAnimal": animalType,
                                               "FechaIngreso": dateCow,
                                               "visitaMédico": doctorVisit == ""
@@ -1657,7 +1670,7 @@ class _MainScreenState extends State<MainScreen> {
                                             partosCodeController.clear();
                                             momCodeController.clear();
                                             sexCodeController.clear();
-                                            dateTernero = "";
+                                            dateTernero = "Sin ternero";
                                             dateCow = "";
                                             doctorVisit = "";
                                           });
