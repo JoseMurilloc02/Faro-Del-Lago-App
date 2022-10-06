@@ -21,8 +21,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<AnimalCard> listAnimals = [];
-  String textType = "Código vaca";
+  List<Widget> listAnimals = [];
+  String textType = "code";
   final _auth = FirebaseAuth.instance;
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   late StreamSubscription<DatabaseEvent> _animalSubscription;
@@ -55,6 +55,16 @@ class _MainScreenState extends State<MainScreen> {
     currentUser = _auth.currentUser;
   }
 
+  String filterType() {
+    if (textType == "code") {
+      return "Filtrado por: Código animal";
+    } else if (textType == "tipoAnimal") {
+      return "Filtrado por: Tipo de animal";
+    } else {
+      return "Filtrado por: Código animal";
+    }
+  }
+
   String calculatePregnant(int estimatedDays, String doctorDate) {
     if (estimatedDays != 0) {
       List dateSplit = doctorDate.split("-");
@@ -73,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
     await ref
         .child(userUID!)
         .child("RegistroAnimales")
-        .orderByChild("code")
+        .orderByChild(textType)
         .once()
         .then((DatabaseEvent snapshot) {
       for (var value in snapshot.snapshot.children) {
@@ -198,6 +208,46 @@ class _MainScreenState extends State<MainScreen> {
                             style: kSubTextWhite,
                             textScaleFactor: .9,
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Cbuttons(
+                                onPressed: () async {
+                                  await ref
+                                      .child(userUID)
+                                      .child("RegistroAnimales")
+                                      .child(animalData["code"].toString())
+                                      .remove()
+                                      .then((value) =>
+                                          Navigator.of(context).pop());
+                                },
+                                backgroundColor: kRed,
+                                child: const Icon(
+                                  Icons.delete_forever_rounded,
+                                  size: 45,
+                                  color: kWhite,
+                                ),
+                                padding: 5,
+                                borderRadius: 25,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Cbuttons(
+                                onPressed: () {},
+                                backgroundColor: Colors.green,
+                                child: const Text(
+                                  "Actualizar datos",
+                                  style: kSubTextWhite,
+                                ),
+                                padding: 15,
+                                borderRadius: 25,
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -312,6 +362,33 @@ class _MainScreenState extends State<MainScreen> {
                             style: kSubTextWhite,
                             textScaleFactor: .9,
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Cbuttons(
+                                onPressed: () async {
+                                  await ref
+                                      .child(userUID)
+                                      .child("RegistroAnimales")
+                                      .child(animalData["code"].toString())
+                                      .remove()
+                                      .then((value) =>
+                                          Navigator.of(context).pop());
+                                },
+                                backgroundColor: kRed,
+                                child: const Icon(
+                                  Icons.delete_forever_rounded,
+                                  size: 30,
+                                  color: kWhite,
+                                ),
+                                padding: 5,
+                                borderRadius: 25,
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -396,6 +473,33 @@ class _MainScreenState extends State<MainScreen> {
                             style: kSubTextWhite,
                             textScaleFactor: .9,
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Cbuttons(
+                                onPressed: () async {
+                                  await ref
+                                      .child(userUID)
+                                      .child("RegistroAnimales")
+                                      .child(animalData["code"].toString())
+                                      .remove()
+                                      .then((value) =>
+                                          Navigator.of(context).pop());
+                                },
+                                backgroundColor: kRed,
+                                child: const Icon(
+                                  Icons.delete_forever_rounded,
+                                  size: 30,
+                                  color: kWhite,
+                                ),
+                                padding: 5,
+                                borderRadius: 25,
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -420,7 +524,7 @@ class _MainScreenState extends State<MainScreen> {
     _animalSubscription = ref
         .child(userUID!)
         .child("RegistroAnimales")
-        .orderByChild("code")
+        .orderByChild(textType)
         .onValue
         .listen((event) {
       if (firstStream) {
@@ -549,6 +653,33 @@ class _MainScreenState extends State<MainScreen> {
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Cbuttons(
+                                  onPressed: () async {
+                                    await ref
+                                        .child(userUID)
+                                        .child("RegistroAnimales")
+                                        .child(animalData["code"].toString())
+                                        .remove()
+                                        .then((value) =>
+                                            Navigator.of(context).pop());
+                                  },
+                                  backgroundColor: kRed,
+                                  child: const Icon(
+                                    Icons.delete_forever_rounded,
+                                    size: 30,
+                                    color: kWhite,
+                                  ),
+                                  padding: 5,
+                                  borderRadius: 25,
+                                )
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -663,6 +794,33 @@ class _MainScreenState extends State<MainScreen> {
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Cbuttons(
+                                  onPressed: () async {
+                                    await ref
+                                        .child(userUID)
+                                        .child("RegistroAnimales")
+                                        .child(animalData["code"].toString())
+                                        .remove()
+                                        .then((value) =>
+                                            Navigator.of(context).pop());
+                                  },
+                                  backgroundColor: kRed,
+                                  child: const Icon(
+                                    Icons.delete_forever_rounded,
+                                    size: 30,
+                                    color: kWhite,
+                                  ),
+                                  padding: 5,
+                                  borderRadius: 25,
+                                )
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -747,6 +905,33 @@ class _MainScreenState extends State<MainScreen> {
                               style: kSubTextWhite,
                               textScaleFactor: .9,
                             ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Cbuttons(
+                                  onPressed: () async {
+                                    await ref
+                                        .child(userUID)
+                                        .child("RegistroAnimales")
+                                        .child(animalData["code"].toString())
+                                        .remove()
+                                        .then((value) =>
+                                            Navigator.of(context).pop());
+                                  },
+                                  backgroundColor: kRed,
+                                  child: const Icon(
+                                    Icons.delete_forever_rounded,
+                                    size: 30,
+                                    color: kWhite,
+                                  ),
+                                  padding: 5,
+                                  borderRadius: 25,
+                                )
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -792,15 +977,16 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           //TODO: CHANGE THIS LINE TITLE "Filtrado: $textType"
-          title: const Text(
-            "Administración Ganado",
+          title: Text(
+            filterType(),
             style: kSubTextWhite,
             textScaleFactor: 1.1,
+            overflow: TextOverflow.visible,
           ),
           actions: [
             PopupMenuButton(
               color: kGrey,
-              iconSize: 15,
+              iconSize: 25,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               elevation: 15,
@@ -898,7 +1084,7 @@ class _MainScreenState extends State<MainScreen> {
                                   const Text(
                                     "Tipo de animal",
                                     style: kSubTextWhite,
-                                    //textScaleFactor: .9,
+                                    textScaleFactor: 1.1,
                                   ),
                                   const SizedBox(
                                     width: 20,
@@ -970,24 +1156,37 @@ class _MainScreenState extends State<MainScreen> {
                                   controller: animalCodeController,
                                   style: kSubTextWhite,
                                   keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 10.0),
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     hintText: "Ingrese código animal",
                                     hintStyle: kSubTextWhite,
-                                    border: OutlineInputBorder(
+                                    alignLabelWithHint: true,
+                                    label: Container(
+                                      decoration: BoxDecoration(
+                                        color: kRed,
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      padding: const EdgeInsets.all(5),
+                                      child: const Text(
+                                        "Código animal",
+                                        style: kSubTextWhite,
+                                        textScaleFactor: 1.1,
+                                      ),
+                                    ),
+                                    border: const OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(15),
                                       ),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
+                                    enabledBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: kWhite, width: 2.0),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(15),
                                       ),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
+                                    focusedBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: kWhite, width: 2.0),
                                       borderRadius: BorderRadius.all(
@@ -1014,24 +1213,38 @@ class _MainScreenState extends State<MainScreen> {
                                     style: kSubTextWhite,
                                     textAlign: TextAlign.center,
                                     keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 10.0),
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 10.0),
                                       hintText: "Ingrese # partos",
                                       hintStyle: kSubTextWhite,
-                                      border: OutlineInputBorder(
+                                      label: Container(
+                                        decoration: BoxDecoration(
+                                          color: kRed,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        padding: const EdgeInsets.all(5),
+                                        child: const Text(
+                                          "Cantidad de partos",
+                                          style: kSubTextWhite,
+                                          textScaleFactor: 1.1,
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(15),
                                         ),
                                       ),
-                                      enabledBorder: OutlineInputBorder(
+                                      enabledBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: kWhite, width: 2.0),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(15),
                                         ),
                                       ),
-                                      focusedBorder: OutlineInputBorder(
+                                      focusedBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: kWhite, width: 2.0),
                                         borderRadius: BorderRadius.all(
@@ -1090,17 +1303,19 @@ class _MainScreenState extends State<MainScreen> {
                                     child: animalType != "Ternero"
                                         ? Text(
                                             dateCow != ""
-                                                ? dateCow
+                                                ? "Fecha ingreso: $dateCow"
                                                 : "Fecha de ingreso a la Finca",
                                             style: kSubTextWhite,
-                                            //textScaleFactor: .9,
+                                            textScaleFactor: 1.1,
+                                            textAlign: TextAlign.center,
                                           )
                                         : Text(
                                             dateCow != ""
-                                                ? dateCow
+                                                ? "Fecha nacimiento: $dateCow"
                                                 : "Fecha de nacimiento",
                                             style: kSubTextWhite,
-                                            //textScaleFactor: .9,
+                                            textAlign: TextAlign.center,
+                                            textScaleFactor: 1.1,
                                           ),
                                   ),
                                 ),
@@ -1119,24 +1334,38 @@ class _MainScreenState extends State<MainScreen> {
                                     controller: terneroController,
                                     style: kSubTextWhite,
                                     keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 10.0),
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 10.0),
                                       hintText: "Ingrese código ternero",
                                       hintStyle: kSubTextWhite,
-                                      border: OutlineInputBorder(
+                                      label: Container(
+                                        decoration: BoxDecoration(
+                                          color: kRed,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        padding: const EdgeInsets.all(5),
+                                        child: const Text(
+                                          "Código ternero",
+                                          style: kSubTextWhite,
+                                          textScaleFactor: 1.1,
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(15),
                                         ),
                                       ),
-                                      enabledBorder: OutlineInputBorder(
+                                      enabledBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: kWhite, width: 2.0),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(15),
                                         ),
                                       ),
-                                      focusedBorder: OutlineInputBorder(
+                                      focusedBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: kWhite, width: 2.0),
                                         borderRadius: BorderRadius.all(
@@ -1197,10 +1426,10 @@ class _MainScreenState extends State<MainScreen> {
                                       },
                                       child: Text(
                                         dateTernero != "Sin ternero"
-                                            ? dateTernero
+                                            ? "Nacimiento ternero: $dateTernero"
                                             : "Fecha nacimiento ternero",
                                         style: kSubTextWhite,
-                                        //textScaleFactor: .9,
+                                        textScaleFactor: 1.1,
                                       ),
                                     ),
                                   ),
@@ -1223,24 +1452,38 @@ class _MainScreenState extends State<MainScreen> {
                                     controller: embarazoController,
                                     style: kSubTextWhite,
                                     keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 10.0),
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 10.0),
                                       hintText: "Ingrese días de embarazo",
                                       hintStyle: kSubTextWhite,
-                                      border: OutlineInputBorder(
+                                      label: Container(
+                                        decoration: BoxDecoration(
+                                          color: kRed,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        padding: const EdgeInsets.all(5),
+                                        child: const Text(
+                                          "Días embarazo",
+                                          style: kSubTextWhite,
+                                          textScaleFactor: 1.1,
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(15),
                                         ),
                                       ),
-                                      enabledBorder: OutlineInputBorder(
+                                      enabledBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: kWhite, width: 2.0),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(15),
                                         ),
                                       ),
-                                      focusedBorder: OutlineInputBorder(
+                                      focusedBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: kWhite, width: 2.0),
                                         borderRadius: BorderRadius.all(
@@ -1274,7 +1517,7 @@ class _MainScreenState extends State<MainScreen> {
                                     decoration: const InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 10.0, horizontal: 10.0),
-                                      hintText: "Ingrese código de la madre",
+                                      hintText: "Ingrese código madre",
                                       hintStyle: kSubTextWhite,
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -1393,10 +1636,10 @@ class _MainScreenState extends State<MainScreen> {
                                     },
                                     child: Text(
                                       doctorVisit != ""
-                                          ? doctorVisit
+                                          ? "Visita médico: $doctorVisit"
                                           : "Fecha de visita médico",
                                       style: kSubTextWhite,
-                                      //textScaleFactor: .9,
+                                      textScaleFactor: 1.1,
                                     ),
                                   ),
                                 ),
@@ -1501,8 +1744,9 @@ class _MainScreenState extends State<MainScreen> {
                                                 .child(animalCodeController
                                                     .value.text)
                                                 .set({
-                                              "code": animalCodeController
-                                                  .value.text,
+                                              "code": int.parse(
+                                                  animalCodeController
+                                                      .value.text),
                                               "tipoAnimal": animalType,
                                               "NumeroPartos":
                                                   partosCodeController
@@ -1631,8 +1875,9 @@ class _MainScreenState extends State<MainScreen> {
                                                   .child(animalCodeController
                                                       .value.text)
                                                   .set({
-                                                "code": animalCodeController
-                                                    .value.text,
+                                                "code": int.parse(
+                                                    animalCodeController
+                                                        .value.text),
                                                 "tipoAnimal": animalType,
                                                 "FechaIngreso": dateCow,
                                                 "visitaMédico":
@@ -1652,8 +1897,9 @@ class _MainScreenState extends State<MainScreen> {
                                                 .child(animalCodeController
                                                     .value.text)
                                                 .set({
-                                              "code": animalCodeController
-                                                  .value.text,
+                                              "code": int.parse(
+                                                  animalCodeController
+                                                      .value.text),
                                               "tipoAnimal": animalType,
                                               "FechaIngreso": dateCow,
                                               "visitaMédico": doctorVisit == ""
