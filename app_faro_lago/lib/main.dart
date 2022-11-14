@@ -1,4 +1,5 @@
 import 'package:app_faro_lago/Screens/main_screen.dart';
+import 'package:app_faro_lago/Screens/update_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ class InitApp extends StatelessWidget {
       routes: {
         "InitScreen": (context) => const InitScreen(),
         "MainScreen": (context) => const MainScreen(),
+        "UpdateScreen": (context) => const UpdateScreen(),
       },
       initialRoute: "InitScreen",
     );

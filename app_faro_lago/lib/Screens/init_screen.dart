@@ -220,7 +220,10 @@ class _InitScreenState extends State<InitScreen> {
                                   waiting = !waiting;
                                 });
                                 newLog.cancel();
-                                Navigator.pushNamed(context, "MainScreen");
+                                Navigator.pushNamed(
+                                  context,
+                                  "MainScreen",
+                                );
                               } on FirebaseAuthException catch (e) {
                                 //print(e);
                                 if (e.code == 'user-not-found') {

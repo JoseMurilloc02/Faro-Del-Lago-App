@@ -215,14 +215,63 @@ class _MainScreenState extends State<MainScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Cbuttons(
-                                onPressed: () async {
-                                  await ref
-                                      .child(userUID)
-                                      .child("RegistroAnimales")
-                                      .child(animalData["code"].toString())
-                                      .remove()
-                                      .then((value) =>
-                                          Navigator.of(context).pop());
+                                onPressed: () {
+                                  Alert(
+                                      context: context,
+                                      title: "Eliminar animal",
+                                      desc: "¿Desea eliminar este animal?",
+                                      style: AlertStyle(
+                                        alertPadding: const EdgeInsets.all(10),
+                                        isCloseButton: false,
+                                        overlayColor: kGrey.withOpacity(0.5),
+                                        backgroundColor: kGrey,
+                                        alertBorder:
+                                            const ContinuousRectangleBorder(
+                                          side:
+                                              BorderSide(color: kRed, width: 3),
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(15),
+                                            bottomRight: Radius.circular(15),
+                                            topRight: Radius.circular(15),
+                                            topLeft: Radius.circular(15),
+                                          ),
+                                        ),
+                                        titleStyle: kSubTextWhite,
+                                        descStyle: kSubTextWhite,
+                                      ),
+                                      buttons: [
+                                        DialogButton(
+                                          radius: BorderRadius.circular(15),
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                          },
+                                          color: kRed,
+                                          child: const Text(
+                                            "Cancelar",
+                                            style: kSubTextWhite,
+                                          ),
+                                        ),
+                                        DialogButton(
+                                          radius: BorderRadius.circular(15),
+                                          onPressed: () async {
+                                            await ref
+                                                .child(userUID)
+                                                .child("RegistroAnimales")
+                                                .child(animalData["code"]
+                                                    .toString())
+                                                .remove()
+                                                .then((value) {
+                                              Navigator.of(context).pop();
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                          color: Colors.green,
+                                          child: const Text(
+                                            "Aceptar",
+                                            style: kSubTextWhite,
+                                          ),
+                                        ),
+                                      ]).show();
                                 },
                                 backgroundColor: kRed,
                                 child: const Icon(
@@ -369,22 +418,84 @@ class _MainScreenState extends State<MainScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Cbuttons(
-                                onPressed: () async {
-                                  await ref
-                                      .child(userUID)
-                                      .child("RegistroAnimales")
-                                      .child(animalData["code"].toString())
-                                      .remove()
-                                      .then((value) =>
-                                          Navigator.of(context).pop());
+                                onPressed: () {
+                                  Alert(
+                                      context: context,
+                                      title: "Eliminar animal",
+                                      desc: "¿Desea eliminar este animal?",
+                                      style: AlertStyle(
+                                        alertPadding: const EdgeInsets.all(10),
+                                        isCloseButton: false,
+                                        overlayColor: kGrey.withOpacity(0.5),
+                                        backgroundColor: kGrey,
+                                        alertBorder:
+                                            const ContinuousRectangleBorder(
+                                          side:
+                                              BorderSide(color: kRed, width: 3),
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(15),
+                                            bottomRight: Radius.circular(15),
+                                            topRight: Radius.circular(15),
+                                            topLeft: Radius.circular(15),
+                                          ),
+                                        ),
+                                        titleStyle: kSubTextWhite,
+                                        descStyle: kSubTextWhite,
+                                      ),
+                                      buttons: [
+                                        DialogButton(
+                                          radius: BorderRadius.circular(15),
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                          },
+                                          color: kRed,
+                                          child: const Text(
+                                            "Cancelar",
+                                            style: kSubTextWhite,
+                                          ),
+                                        ),
+                                        DialogButton(
+                                          radius: BorderRadius.circular(15),
+                                          onPressed: () async {
+                                            await ref
+                                                .child(userUID)
+                                                .child("RegistroAnimales")
+                                                .child(animalData["code"]
+                                                    .toString())
+                                                .remove()
+                                                .then((value) {
+                                              Navigator.of(context).pop();
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                          color: Colors.green,
+                                          child: const Text(
+                                            "Aceptar",
+                                            style: kSubTextWhite,
+                                          ),
+                                        ),
+                                      ]).show();
                                 },
                                 backgroundColor: kRed,
                                 child: const Icon(
                                   Icons.delete_forever_rounded,
-                                  size: 30,
+                                  size: 45,
                                   color: kWhite,
                                 ),
                                 padding: 5,
+                                borderRadius: 25,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Cbuttons(
+                                onPressed: () {},
+                                backgroundColor: Colors.green,
+                                child: const Text(
+                                  "Actualizar datos",
+                                  style: kSubTextWhite,
+                                ),
+                                padding: 15,
                                 borderRadius: 25,
                               )
                             ],
@@ -419,93 +530,58 @@ class _MainScreenState extends State<MainScreen> {
               ],
               onPressed: () {
                 Alert(
-                  title: "Descripción general",
-                  style: AlertStyle(
-                    alertPadding: const EdgeInsets.all(10),
-                    isCloseButton: false,
-                    isButtonVisible: false,
-                    overlayColor: kGrey.withOpacity(0.5),
-                    backgroundColor: kGrey,
-                    alertBorder: const ContinuousRectangleBorder(
-                      side: BorderSide(color: kRed, width: 3),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                        topLeft: Radius.circular(15),
+                    context: context,
+                    title: "Eliminar animal",
+                    desc: "¿Desea eliminar este animal?",
+                    style: AlertStyle(
+                      alertPadding: const EdgeInsets.all(10),
+                      isCloseButton: false,
+                      overlayColor: kGrey.withOpacity(0.5),
+                      backgroundColor: kGrey,
+                      alertBorder: const ContinuousRectangleBorder(
+                        side: BorderSide(color: kRed, width: 3),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                          topLeft: Radius.circular(15),
+                        ),
                       ),
+                      titleStyle: kSubTextWhite,
+                      descStyle: kSubTextWhite,
                     ),
-                    titleStyle: kSubTextWhite,
-                    descStyle: kSubTextWhite,
-                  ),
-                  content: Center(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Código animal: ${animalData["tipoAnimal"]}",
-                            style: kSubTextWhite,
-                            textScaleFactor: .9,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Tipo de animal: ${animalData["tipoAnimal"]}",
-                            style: kSubTextWhite,
-                            textScaleFactor: .9,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Fecha de ingreso finca: ${animalData["FechaIngreso"]}",
-                            style: kSubTextWhite,
-                            textScaleFactor: .9,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Ultima visita médico: ${animalData["visitaMédico"]}",
-                            style: kSubTextWhite,
-                            textScaleFactor: .9,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Cbuttons(
-                                onPressed: () async {
-                                  await ref
-                                      .child(userUID)
-                                      .child("RegistroAnimales")
-                                      .child(animalData["code"].toString())
-                                      .remove()
-                                      .then((value) =>
-                                          Navigator.of(context).pop());
-                                },
-                                backgroundColor: kRed,
-                                child: const Icon(
-                                  Icons.delete_forever_rounded,
-                                  size: 30,
-                                  color: kWhite,
-                                ),
-                                padding: 5,
-                                borderRadius: 25,
-                              )
-                            ],
-                          )
-                        ],
+                    buttons: [
+                      DialogButton(
+                        radius: BorderRadius.circular(15),
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+                        },
+                        color: kRed,
+                        child: const Text(
+                          "Cancelar",
+                          style: kSubTextWhite,
+                        ),
                       ),
-                    ),
-                  ),
-                  context: context,
-                ).show();
+                      DialogButton(
+                        radius: BorderRadius.circular(15),
+                        onPressed: () async {
+                          await ref
+                              .child(userUID)
+                              .child("RegistroAnimales")
+                              .child(animalData["code"].toString())
+                              .remove()
+                              .then((value) {
+                            Navigator.of(context).pop();
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        color: Colors.green,
+                        child: const Text(
+                          "Aceptar",
+                          style: kSubTextWhite,
+                        ),
+                      ),
+                    ]).show();
               });
           setState(() {
             listAnimals.add(animalCard);
@@ -530,7 +606,10 @@ class _MainScreenState extends State<MainScreen> {
       if (firstStream) {
         firstStream = false;
       } else {
-        listAnimals.clear();
+        print("Listerner snapshot");
+        setState(() {
+          listAnimals.clear();
+        });
         for (var value in event.snapshot.children) {
           print(value.value);
           Map animalData = value.value as Map;
@@ -660,22 +739,85 @@ class _MainScreenState extends State<MainScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Cbuttons(
-                                  onPressed: () async {
-                                    await ref
-                                        .child(userUID)
-                                        .child("RegistroAnimales")
-                                        .child(animalData["code"].toString())
-                                        .remove()
-                                        .then((value) =>
-                                            Navigator.of(context).pop());
+                                  onPressed: () {
+                                    Alert(
+                                        context: context,
+                                        title: "Eliminar animal",
+                                        desc: "¿Desea eliminar este animal?",
+                                        style: AlertStyle(
+                                          alertPadding:
+                                              const EdgeInsets.all(10),
+                                          isCloseButton: false,
+                                          overlayColor: kGrey.withOpacity(0.5),
+                                          backgroundColor: kGrey,
+                                          alertBorder:
+                                              const ContinuousRectangleBorder(
+                                            side: BorderSide(
+                                                color: kRed, width: 3),
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(15),
+                                              bottomRight: Radius.circular(15),
+                                              topRight: Radius.circular(15),
+                                              topLeft: Radius.circular(15),
+                                            ),
+                                          ),
+                                          titleStyle: kSubTextWhite,
+                                          descStyle: kSubTextWhite,
+                                        ),
+                                        buttons: [
+                                          DialogButton(
+                                            radius: BorderRadius.circular(15),
+                                            onPressed: () async {
+                                              Navigator.of(context).pop();
+                                            },
+                                            color: kRed,
+                                            child: const Text(
+                                              "Cancelar",
+                                              style: kSubTextWhite,
+                                            ),
+                                          ),
+                                          DialogButton(
+                                            radius: BorderRadius.circular(15),
+                                            onPressed: () async {
+                                              await ref
+                                                  .child(userUID)
+                                                  .child("RegistroAnimales")
+                                                  .child(animalData["code"]
+                                                      .toString())
+                                                  .remove()
+                                                  .then((value) {
+                                                Navigator.of(context).pop();
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                            color: Colors.green,
+                                            child: const Text(
+                                              "Aceptar",
+                                              style: kSubTextWhite,
+                                            ),
+                                          ),
+                                        ]).show();
                                   },
                                   backgroundColor: kRed,
                                   child: const Icon(
                                     Icons.delete_forever_rounded,
-                                    size: 30,
+                                    size: 45,
                                     color: kWhite,
                                   ),
                                   padding: 5,
+                                  borderRadius: 25,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Cbuttons(
+                                  onPressed: () {},
+                                  backgroundColor: Colors.green,
+                                  child: const Text(
+                                    "Actualizar datos",
+                                    style: kSubTextWhite,
+                                  ),
+                                  padding: 15,
                                   borderRadius: 25,
                                 )
                               ],
@@ -801,22 +943,85 @@ class _MainScreenState extends State<MainScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Cbuttons(
-                                  onPressed: () async {
-                                    await ref
-                                        .child(userUID)
-                                        .child("RegistroAnimales")
-                                        .child(animalData["code"].toString())
-                                        .remove()
-                                        .then((value) =>
-                                            Navigator.of(context).pop());
+                                  onPressed: () {
+                                    Alert(
+                                        context: context,
+                                        title: "Eliminar animal",
+                                        desc: "¿Desea eliminar este animal?",
+                                        style: AlertStyle(
+                                          alertPadding:
+                                              const EdgeInsets.all(10),
+                                          isCloseButton: false,
+                                          overlayColor: kGrey.withOpacity(0.5),
+                                          backgroundColor: kGrey,
+                                          alertBorder:
+                                              const ContinuousRectangleBorder(
+                                            side: BorderSide(
+                                                color: kRed, width: 3),
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(15),
+                                              bottomRight: Radius.circular(15),
+                                              topRight: Radius.circular(15),
+                                              topLeft: Radius.circular(15),
+                                            ),
+                                          ),
+                                          titleStyle: kSubTextWhite,
+                                          descStyle: kSubTextWhite,
+                                        ),
+                                        buttons: [
+                                          DialogButton(
+                                            radius: BorderRadius.circular(15),
+                                            onPressed: () async {
+                                              Navigator.of(context).pop();
+                                            },
+                                            color: kRed,
+                                            child: const Text(
+                                              "Cancelar",
+                                              style: kSubTextWhite,
+                                            ),
+                                          ),
+                                          DialogButton(
+                                            radius: BorderRadius.circular(15),
+                                            onPressed: () async {
+                                              await ref
+                                                  .child(userUID)
+                                                  .child("RegistroAnimales")
+                                                  .child(animalData["code"]
+                                                      .toString())
+                                                  .remove()
+                                                  .then((value) {
+                                                Navigator.of(context).pop();
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                            color: Colors.green,
+                                            child: const Text(
+                                              "Aceptar",
+                                              style: kSubTextWhite,
+                                            ),
+                                          ),
+                                        ]).show();
                                   },
                                   backgroundColor: kRed,
                                   child: const Icon(
                                     Icons.delete_forever_rounded,
-                                    size: 30,
+                                    size: 45,
                                     color: kWhite,
                                   ),
                                   padding: 5,
+                                  borderRadius: 25,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Cbuttons(
+                                  onPressed: () {},
+                                  backgroundColor: Colors.green,
+                                  child: const Text(
+                                    "Actualizar datos",
+                                    style: kSubTextWhite,
+                                  ),
+                                  padding: 15,
                                   borderRadius: 25,
                                 )
                               ],
@@ -851,93 +1056,58 @@ class _MainScreenState extends State<MainScreen> {
                 ],
                 onPressed: () {
                   Alert(
-                    title: "Descripción general",
-                    style: AlertStyle(
-                      alertPadding: const EdgeInsets.all(10),
-                      isCloseButton: false,
-                      isButtonVisible: false,
-                      overlayColor: kGrey.withOpacity(0.5),
-                      backgroundColor: kGrey,
-                      alertBorder: const ContinuousRectangleBorder(
-                        side: BorderSide(color: kRed, width: 3),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                          topLeft: Radius.circular(15),
+                      context: context,
+                      title: "Eliminar animal",
+                      desc: "¿Desea eliminar este animal?",
+                      style: AlertStyle(
+                        alertPadding: const EdgeInsets.all(10),
+                        isCloseButton: false,
+                        overlayColor: kGrey.withOpacity(0.5),
+                        backgroundColor: kGrey,
+                        alertBorder: const ContinuousRectangleBorder(
+                          side: BorderSide(color: kRed, width: 3),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            topLeft: Radius.circular(15),
+                          ),
                         ),
+                        titleStyle: kSubTextWhite,
+                        descStyle: kSubTextWhite,
                       ),
-                      titleStyle: kSubTextWhite,
-                      descStyle: kSubTextWhite,
-                    ),
-                    content: Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Código animal: ${animalData["tipoAnimal"]}",
-                              style: kSubTextWhite,
-                              textScaleFactor: .9,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "Tipo de animal: ${animalData["tipoAnimal"]}",
-                              style: kSubTextWhite,
-                              textScaleFactor: .9,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "Fecha de ingreso finca: ${animalData["FechaIngreso"]}",
-                              style: kSubTextWhite,
-                              textScaleFactor: .9,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "Ultima visita médico: ${animalData["visitaMédico"]}",
-                              style: kSubTextWhite,
-                              textScaleFactor: .9,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Cbuttons(
-                                  onPressed: () async {
-                                    await ref
-                                        .child(userUID)
-                                        .child("RegistroAnimales")
-                                        .child(animalData["code"].toString())
-                                        .remove()
-                                        .then((value) =>
-                                            Navigator.of(context).pop());
-                                  },
-                                  backgroundColor: kRed,
-                                  child: const Icon(
-                                    Icons.delete_forever_rounded,
-                                    size: 30,
-                                    color: kWhite,
-                                  ),
-                                  padding: 5,
-                                  borderRadius: 25,
-                                )
-                              ],
-                            )
-                          ],
+                      buttons: [
+                        DialogButton(
+                          radius: BorderRadius.circular(15),
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+                          },
+                          color: kRed,
+                          child: const Text(
+                            "Cancelar",
+                            style: kSubTextWhite,
+                          ),
                         ),
-                      ),
-                    ),
-                    context: context,
-                  ).show();
+                        DialogButton(
+                          radius: BorderRadius.circular(15),
+                          onPressed: () async {
+                            await ref
+                                .child(userUID)
+                                .child("RegistroAnimales")
+                                .child(animalData["code"].toString())
+                                .remove()
+                                .then((value) {
+                              Navigator.of(context).pop();
+                            });
+                            Navigator.of(context).pop();
+                          },
+                          color: Colors.green,
+                          child: const Text(
+                            "Aceptar",
+                            style: kSubTextWhite,
+                          ),
+                        ),
+                      ]).show();
                 });
             setState(() {
               listAnimals.add(animalCard);
