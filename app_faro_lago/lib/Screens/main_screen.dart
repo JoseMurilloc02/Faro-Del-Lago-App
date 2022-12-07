@@ -1211,166 +1211,170 @@ class _MainScreenState extends State<MainScreen> {
                           height: deviceHeight,
                           child: ListView(
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Material(
-                                    shape: const CircleBorder(),
-                                    color: kRed,
-                                    elevation: 5.0,
-                                    child: IconButton(
-                                      padding: const EdgeInsets.all(4.0),
-                                      onPressed: () {
-                                        setState(() {
-                                          addButton = !addButton;
-                                          menuButton = !menuButton;
-                                        });
-                                      },
-                                      icon: const Icon(
-                                        Icons.close_rounded,
-                                        size: 25,
-                                        color: kWhite,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: deviceWidth < deviceHeight
-                                        ? deviceWidth * .03
-                                        : deviceWidth * .2,
-                                  ),
-                                  const Text(
-                                    "Añadir elemento",
-                                    style: kMainText,
-                                    textScaleFactor: 1.5,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Tipo de animal",
-                                    style: kSubTextWhite,
-                                    textScaleFactor: 1.1,
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Material(
-                                    borderRadius: BorderRadius.circular(15),
-                                    elevation: 15,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: kRed,
-                                        borderRadius: BorderRadius.circular(15),
-                                        border:
-                                            Border.all(color: kWhite, width: 2),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: DropdownButton<String>(
-                                          underline: Container(),
-                                          elevation: 25,
-                                          alignment:
-                                              AlignmentDirectional.center,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          dropdownColor: kRed,
-                                          value: animalType,
-                                          iconSize: 25,
-                                          iconEnabledColor: kWhite,
-                                          style: kSubTextWhite,
-                                          onChanged: (String? newValue) async {
-                                            setState(() {
-                                              animalType = newValue!;
-                                            });
-                                          },
-                                          items: listOfAnimals
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        2.5, 5, 2.5, 10),
-                                                child: Text(
-                                                  value,
-                                                  textAlign: TextAlign.center,
-                                                  style: kSubTextWhite,
-                                                  overflow: TextOverflow.fade,
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Material(
+                                      shape: const CircleBorder(),
+                                      color: kRed,
+                                      elevation: 5.0,
+                                      child: IconButton(
+                                        padding: const EdgeInsets.all(4.0),
+                                        onPressed: () {
+                                          setState(() {
+                                            addButton = !addButton;
+                                            menuButton = !menuButton;
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.close_rounded,
+                                          size: 25,
+                                          color: kWhite,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Material(
-                                borderRadius: BorderRadius.circular(15),
-                                color: kRed,
-                                elevation: 15,
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: animalCodeController,
-                                  style: kSubTextWhite,
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    hintText: "Ingrese código animal",
-                                    hintStyle: kSubTextWhite,
-                                    alignLabelWithHint: true,
-                                    label: Container(
-                                      decoration: BoxDecoration(
-                                        color: kRed,
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      padding: const EdgeInsets.all(5),
-                                      child: const Text(
-                                        "Código animal",
-                                        style: kSubTextWhite,
-                                        textScaleFactor: 1.1,
-                                      ),
+                                    SizedBox(
+                                      width: deviceWidth < deviceHeight
+                                          ? deviceWidth * .03
+                                          : deviceWidth * .2,
                                     ),
-                                    border: const OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(15),
-                                      ),
+                                    const Text(
+                                      "Añadir elemento",
+                                      style: kMainText,
+                                      textScaleFactor: 1.5,
                                     ),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: kWhite, width: 2.0),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(15),
-                                      ),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: kWhite, width: 2.0),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(15),
-                                      ),
-                                    ),
-                                  ),
-                                  onChanged: (value) {},
-                                  // decoration:
-                                  //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(
-                                height: 20,
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      "Tipo de animal",
+                                      style: kSubTextWhite,
+                                      textScaleFactor: 1.1,
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Material(
+                                      borderRadius: BorderRadius.circular(15),
+                                      elevation: 15,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: kRed,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                              color: kWhite, width: 2),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: DropdownButton<String>(
+                                            underline: Container(),
+                                            elevation: 25,
+                                            alignment:
+                                                AlignmentDirectional.center,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            dropdownColor: kRed,
+                                            value: animalType,
+                                            iconSize: 25,
+                                            iconEnabledColor: kWhite,
+                                            style: kSubTextWhite,
+                                            onChanged:
+                                                (String? newValue) async {
+                                              setState(() {
+                                                animalType = newValue!;
+                                              });
+                                            },
+                                            items: listOfAnimals
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                alignment:
+                                                    AlignmentDirectional.center,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          2.5, 5, 2.5, 10),
+                                                  child: Text(
+                                                    value,
+                                                    textAlign: TextAlign.center,
+                                                    style: kSubTextWhite,
+                                                    overflow: TextOverflow.fade,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: kRed,
+                                  elevation: 15,
+                                  child: TextField(
+                                    textAlign: TextAlign.center,
+                                    controller: animalCodeController,
+                                    style: kSubTextWhite,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 10.0),
+                                      hintText: "Ingrese código animal",
+                                      hintStyle: kSubTextWhite,
+                                      alignLabelWithHint: true,
+                                      label: Container(
+                                        decoration: BoxDecoration(
+                                          color: kRed,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        padding: const EdgeInsets.all(5),
+                                        child: const Text(
+                                          "Código animal",
+                                          style: kSubTextWhite,
+                                          textScaleFactor: 1.1,
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15),
+                                        ),
+                                      ),
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: kWhite, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15),
+                                        ),
+                                      ),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: kWhite, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15),
+                                        ),
+                                      ),
+                                    ),
+                                    onChanged: (value) {},
+                                    // decoration:
+                                    //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                                  ),
+                                ),
                               ),
                               Visibility(
                                 visible: animalType == "Vaca" ? true : false,
