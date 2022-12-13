@@ -30,9 +30,9 @@ class _InitScreenState extends State<InitScreen> {
   void isLogged() async {
     newLog = _auth.authStateChanges().listen((User? user) {
       if (user == null) {
-        print('User is currently signed out!');
+        debugPrint('User is currently signed out!');
       } else {
-        print('User is signed in!');
+        debugPrint('User is signed in!');
         Navigator.pushNamed(context, "MainScreen");
       }
     });
@@ -211,11 +211,9 @@ class _InitScreenState extends State<InitScreen> {
                           if (switcher) {
                             if (fields) {
                               try {
-                                UserCredential userCredential =
-                                    await _auth.signInWithEmailAndPassword(
-                                        email: emailController.value.text,
-                                        password:
-                                            passwordController.value.text);
+                                await _auth.signInWithEmailAndPassword(
+                                    email: emailController.value.text,
+                                    password: passwordController.value.text);
                                 setState(() {
                                   waiting = !waiting;
                                 });
@@ -397,11 +395,9 @@ class _InitScreenState extends State<InitScreen> {
                           } else {
                             if (fields) {
                               try {
-                                UserCredential userCredential =
-                                    await _auth.createUserWithEmailAndPassword(
-                                        email: emailController.value.text,
-                                        password:
-                                            passwordController.value.text);
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: emailController.value.text,
+                                    password: passwordController.value.text);
                                 setState(() {
                                   waiting = !waiting;
                                 });

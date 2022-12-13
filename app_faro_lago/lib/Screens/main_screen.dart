@@ -46,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
     if (choice == "Cerrar sesión") {
       _auth.signOut();
       _animalSubscription.cancel();
-      print("Disposed suscriptor");
+      debugPrint("Disposed suscriptor");
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     }
   }
@@ -87,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
         .once()
         .then((DatabaseEvent snapshot) {
       for (var value in snapshot.snapshot.children) {
-        print(value.value);
+        debugPrint("getAnimalData: ${value.value}");
         Map animalData = value.value as Map;
         if (animalData["tipoAnimal"] == "Vaca") {
           Map codeTernero = animalData["CantidadTerneros"];
@@ -606,12 +606,12 @@ class _MainScreenState extends State<MainScreen> {
       if (firstStream) {
         firstStream = false;
       } else {
-        print("Listerner snapshot");
+        debugPrint("Listerner snapshot");
         setState(() {
           listAnimals.clear();
         });
         for (var value in event.snapshot.children) {
-          print(value.value);
+          debugPrint("InitState: ${value.value}");
           Map animalData = value.value as Map;
           if (animalData["tipoAnimal"] == "Vaca") {
             Map codeTernero = animalData["CantidadTerneros"];
@@ -1122,7 +1122,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void dispose() {
     _animalSubscription.cancel();
-    print("Disposed suscriptor");
+    debugPrint("Disposed suscriptor");
     super.dispose();
   }
 
@@ -1378,189 +1378,66 @@ class _MainScreenState extends State<MainScreen> {
                               ),
                               Visibility(
                                 visible: animalType == "Vaca" ? true : false,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: kRed,
-                                  elevation: 20,
-                                  child: TextField(
-                                    controller: partosCodeController,
-                                    style: kSubTextWhite,
-                                    textAlign: TextAlign.center,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 10.0),
-                                      hintText: "Ingrese # partos",
-                                      hintStyle: kSubTextWhite,
-                                      label: Container(
-                                        decoration: BoxDecoration(
-                                          color: kRed,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        padding: const EdgeInsets.all(5),
-                                        child: const Text(
-                                          "Cantidad de partos",
-                                          style: kSubTextWhite,
-                                          textScaleFactor: 1.1,
-                                        ),
-                                      ),
-                                      border: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                    ),
-                                    onChanged: (value) {},
-                                    // decoration:
-                                    //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Vaca" ? true : false,
-                                child: const SizedBox(
-                                  height: 20,
-                                ),
-                              ),
-                              Material(
-                                borderRadius: BorderRadius.circular(15),
-                                color: kRed,
-                                elevation: 15,
-                                child: Container(
-                                  decoration: BoxDecoration(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: Material(
                                     borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(color: kWhite, width: 2),
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      DatePicker.showDatePicker(context,
-                                          theme: const DatePickerTheme(
-                                              headerColor: kRed,
-                                              backgroundColor: kGrey,
-                                              doneStyle: kSubTextWhite,
-                                              cancelStyle: kSubTextWhite,
-                                              itemStyle: kSubTextWhite),
-                                          showTitleActions: true,
-                                          minTime: DateTime(1920, 1, 1),
-                                          maxTime: DateTime.now(),
-                                          onChanged: (date) {
-                                        //print('change $date');
-                                      }, onConfirm: (date) async {
-                                        //print('confirm $date');
-                                        setState(() {
-                                          dateCow = date.year.toString() +
-                                              "-" +
-                                              date.month.toString() +
-                                              "-" +
-                                              date.day.toString();
-                                        });
-                                      },
-                                          currentTime: DateTime.now(),
-                                          locale: LocaleType.es);
-                                    },
-                                    child: animalType != "Ternero"
-                                        ? Text(
-                                            dateCow != ""
-                                                ? "Fecha ingreso: $dateCow"
-                                                : "Fecha de ingreso a la Finca",
+                                    color: kRed,
+                                    elevation: 20,
+                                    child: TextField(
+                                      controller: partosCodeController,
+                                      style: kSubTextWhite,
+                                      textAlign: TextAlign.center,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 15.0,
+                                                horizontal: 10.0),
+                                        hintText: "Ingrese # partos",
+                                        hintStyle: kSubTextWhite,
+                                        label: Container(
+                                          decoration: BoxDecoration(
+                                            color: kRed,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          padding: const EdgeInsets.all(5),
+                                          child: const Text(
+                                            "Cantidad de partos",
                                             style: kSubTextWhite,
-                                            textScaleFactor: 1.1,
-                                            textAlign: TextAlign.center,
-                                          )
-                                        : Text(
-                                            dateCow != ""
-                                                ? "Fecha nacimiento: $dateCow"
-                                                : "Fecha de nacimiento",
-                                            style: kSubTextWhite,
-                                            textAlign: TextAlign.center,
                                             textScaleFactor: 1.1,
                                           ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Visibility(
-                                visible: animalType == "Vaca" ? true : false,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: kRed,
-                                  elevation: 15,
-                                  child: TextField(
-                                    textAlign: TextAlign.center,
-                                    controller: terneroController,
-                                    style: kSubTextWhite,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 10.0),
-                                      hintText: "Ingrese código ternero",
-                                      hintStyle: kSubTextWhite,
-                                      label: Container(
-                                        decoration: BoxDecoration(
-                                          color: kRed,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
                                         ),
-                                        padding: const EdgeInsets.all(5),
-                                        child: const Text(
-                                          "Código ternero",
-                                          style: kSubTextWhite,
-                                          textScaleFactor: 1.1,
+                                        border: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        enabledBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
                                         ),
                                       ),
-                                      border: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
+                                      onChanged: (value) {},
+                                      // decoration:
+                                      //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
                                     ),
-                                    onChanged: (value) {},
-                                    // decoration:
-                                    //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
                                   ),
                                 ),
                               ),
-                              Visibility(
-                                visible: animalType == "Vaca" ? true : false,
-                                child: const SizedBox(
-                                  height: 20,
-                                ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Vaca" ? true : false,
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
                                 child: Material(
                                   borderRadius: BorderRadius.circular(15),
                                   color: kRed,
@@ -1584,11 +1461,334 @@ class _MainScreenState extends State<MainScreen> {
                                             minTime: DateTime(1920, 1, 1),
                                             maxTime: DateTime.now(),
                                             onChanged: (date) {
-                                          //print('change $date');
+                                          //debugPrint('change $date');
                                         }, onConfirm: (date) async {
-                                          //print('confirm $date');
+                                          //debugPrint('confirm $date');
                                           setState(() {
-                                            dateTernero = date.year.toString() +
+                                            dateCow = date.year.toString() +
+                                                "-" +
+                                                date.month.toString() +
+                                                "-" +
+                                                date.day.toString();
+                                          });
+                                        },
+                                            currentTime: DateTime.now(),
+                                            locale: LocaleType.es);
+                                      },
+                                      child: animalType != "Ternero"
+                                          ? Text(
+                                              dateCow != ""
+                                                  ? "Fecha ingreso: $dateCow"
+                                                  : "Fecha de ingreso a la Finca",
+                                              style: kSubTextWhite,
+                                              textScaleFactor: 1.1,
+                                              textAlign: TextAlign.center,
+                                            )
+                                          : Text(
+                                              dateCow != ""
+                                                  ? "Fecha nacimiento: $dateCow"
+                                                  : "Fecha de nacimiento",
+                                              style: kSubTextWhite,
+                                              textAlign: TextAlign.center,
+                                              textScaleFactor: 1.1,
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: animalType == "Vaca" ? true : false,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: kRed,
+                                    elevation: 15,
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller: terneroController,
+                                      style: kSubTextWhite,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 15.0,
+                                                horizontal: 10.0),
+                                        hintText: "Ingrese código ternero",
+                                        hintStyle: kSubTextWhite,
+                                        label: Container(
+                                          decoration: BoxDecoration(
+                                            color: kRed,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          padding: const EdgeInsets.all(5),
+                                          child: const Text(
+                                            "Código ternero",
+                                            style: kSubTextWhite,
+                                            textScaleFactor: 1.1,
+                                          ),
+                                        ),
+                                        border: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        enabledBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                      ),
+                                      onChanged: (value) {},
+                                      // decoration:
+                                      //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: animalType == "Vaca" ? true : false,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: kRed,
+                                    elevation: 15,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        border:
+                                            Border.all(color: kWhite, width: 2),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          DatePicker.showDatePicker(context,
+                                              theme: const DatePickerTheme(
+                                                  headerColor: kRed,
+                                                  backgroundColor: kGrey,
+                                                  doneStyle: kSubTextWhite,
+                                                  cancelStyle: kSubTextWhite,
+                                                  itemStyle: kSubTextWhite),
+                                              showTitleActions: true,
+                                              minTime: DateTime(1920, 1, 1),
+                                              maxTime: DateTime.now(),
+                                              onChanged: (date) {
+                                            //debugPrint('change $date');
+                                          }, onConfirm: (date) async {
+                                            //debugPrint('confirm $date');
+                                            setState(() {
+                                              dateTernero =
+                                                  date.year.toString() +
+                                                      "-" +
+                                                      date.month.toString() +
+                                                      "-" +
+                                                      date.day.toString();
+                                            });
+                                          },
+                                              currentTime: DateTime.now(),
+                                              locale: LocaleType.es);
+                                        },
+                                        child: Text(
+                                          dateTernero != "Sin ternero"
+                                              ? "Nacimiento ternero: $dateTernero"
+                                              : "Fecha nacimiento ternero",
+                                          style: kSubTextWhite,
+                                          textScaleFactor: 1.1,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: animalType == "Vaca" ? true : false,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: kRed,
+                                    elevation: 15,
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller: embarazoController,
+                                      style: kSubTextWhite,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 15.0,
+                                                horizontal: 10.0),
+                                        hintText: "Ingrese días de embarazo",
+                                        hintStyle: kSubTextWhite,
+                                        label: Container(
+                                          decoration: BoxDecoration(
+                                            color: kRed,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          padding: const EdgeInsets.all(5),
+                                          child: const Text(
+                                            "Días embarazo",
+                                            style: kSubTextWhite,
+                                            textScaleFactor: 1.1,
+                                          ),
+                                        ),
+                                        border: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        enabledBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                      ),
+                                      onChanged: (value) {},
+                                      // decoration:
+                                      //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: animalType == "Ternero" ? true : false,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: kRed,
+                                    elevation: 20,
+                                    child: TextField(
+                                      controller: momCodeController,
+                                      style: kSubTextWhite,
+                                      textAlign: TextAlign.center,
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 10.0),
+                                        hintText: "Ingrese código madre",
+                                        hintStyle: kSubTextWhite,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                      ),
+                                      onChanged: (value) {},
+                                      // decoration:
+                                      //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: animalType == "Ternero" ? true : false,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: kRed,
+                                    elevation: 20,
+                                    child: TextField(
+                                      controller: sexCodeController,
+                                      style: kSubTextWhite,
+                                      textAlign: TextAlign.center,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 10.0),
+                                        hintText: "Sexo ternero",
+                                        hintStyle: kSubTextWhite,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: kWhite, width: 2.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                      ),
+                                      onChanged: (value) {},
+                                      // decoration:
+                                      //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: kRed,
+                                  elevation: 15,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border:
+                                          Border.all(color: kWhite, width: 2),
+                                    ),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        DatePicker.showDatePicker(context,
+                                            theme: const DatePickerTheme(
+                                                headerColor: kRed,
+                                                backgroundColor: kGrey,
+                                                doneStyle: kSubTextWhite,
+                                                cancelStyle: kSubTextWhite,
+                                                itemStyle: kSubTextWhite),
+                                            showTitleActions: true,
+                                            minTime: DateTime(1920, 1, 1),
+                                            maxTime: DateTime.now(),
+                                            onChanged: (date) {
+                                          //debugPrint('change $date');
+                                        }, onConfirm: (date) async {
+                                          //debugPrint('confirm $date');
+                                          setState(() {
+                                            doctorVisit = date.year.toString() +
                                                 "-" +
                                                 date.month.toString() +
                                                 "-" +
@@ -1599,227 +1799,15 @@ class _MainScreenState extends State<MainScreen> {
                                             locale: LocaleType.es);
                                       },
                                       child: Text(
-                                        dateTernero != "Sin ternero"
-                                            ? "Nacimiento ternero: $dateTernero"
-                                            : "Fecha nacimiento ternero",
+                                        doctorVisit != ""
+                                            ? "Visita médico: $doctorVisit"
+                                            : "Fecha de visita médico",
                                         style: kSubTextWhite,
                                         textScaleFactor: 1.1,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Vaca" ? true : false,
-                                child: const SizedBox(
-                                  height: 20,
-                                ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Vaca" ? true : false,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: kRed,
-                                  elevation: 15,
-                                  child: TextField(
-                                    textAlign: TextAlign.center,
-                                    controller: embarazoController,
-                                    style: kSubTextWhite,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 10.0),
-                                      hintText: "Ingrese días de embarazo",
-                                      hintStyle: kSubTextWhite,
-                                      label: Container(
-                                        decoration: BoxDecoration(
-                                          color: kRed,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        padding: const EdgeInsets.all(5),
-                                        child: const Text(
-                                          "Días embarazo",
-                                          style: kSubTextWhite,
-                                          textScaleFactor: 1.1,
-                                        ),
-                                      ),
-                                      border: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                    ),
-                                    onChanged: (value) {},
-                                    // decoration:
-                                    //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Vaca" ? true : false,
-                                child: const SizedBox(
-                                  height: 20,
-                                ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Ternero" ? true : false,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: kRed,
-                                  elevation: 20,
-                                  child: TextField(
-                                    controller: momCodeController,
-                                    style: kSubTextWhite,
-                                    textAlign: TextAlign.center,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 10.0),
-                                      hintText: "Ingrese código madre",
-                                      hintStyle: kSubTextWhite,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                    ),
-                                    onChanged: (value) {},
-                                    // decoration:
-                                    //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Ternero" ? true : false,
-                                child: const SizedBox(
-                                  height: 20,
-                                ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Ternero" ? true : false,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: kRed,
-                                  elevation: 20,
-                                  child: TextField(
-                                    controller: sexCodeController,
-                                    style: kSubTextWhite,
-                                    textAlign: TextAlign.center,
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 10.0),
-                                      hintText: "Sexo ternero",
-                                      hintStyle: kSubTextWhite,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: kWhite, width: 2.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                    ),
-                                    onChanged: (value) {},
-                                    // decoration:
-                                    //     kTextFieldDecoration.copyWith(hintText: "Enter your email"),
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: animalType == "Ternero" ? true : false,
-                                child: const SizedBox(
-                                  height: 20,
-                                ),
-                              ),
-                              Material(
-                                borderRadius: BorderRadius.circular(15),
-                                color: kRed,
-                                elevation: 15,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(color: kWhite, width: 2),
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      DatePicker.showDatePicker(context,
-                                          theme: const DatePickerTheme(
-                                              headerColor: kRed,
-                                              backgroundColor: kGrey,
-                                              doneStyle: kSubTextWhite,
-                                              cancelStyle: kSubTextWhite,
-                                              itemStyle: kSubTextWhite),
-                                          showTitleActions: true,
-                                          minTime: DateTime(1920, 1, 1),
-                                          maxTime: DateTime.now(),
-                                          onChanged: (date) {
-                                        //print('change $date');
-                                      }, onConfirm: (date) async {
-                                        //print('confirm $date');
-                                        setState(() {
-                                          doctorVisit = date.year.toString() +
-                                              "-" +
-                                              date.month.toString() +
-                                              "-" +
-                                              date.day.toString();
-                                        });
-                                      },
-                                          currentTime: DateTime.now(),
-                                          locale: LocaleType.es);
-                                    },
-                                    child: Text(
-                                      doctorVisit != ""
-                                          ? "Visita médico: $doctorVisit"
-                                          : "Fecha de visita médico",
-                                      style: kSubTextWhite,
-                                      textScaleFactor: 1.1,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
