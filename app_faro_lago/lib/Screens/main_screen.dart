@@ -42,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   String animalType = "Vaca";
   List<String> listOfAnimals = ["Toro", "Vaca", "Ternero"];
   late User? currentUser;
+
   void choiceAction(String choice) async {
     if (choice == "Cerrar sesión") {
       _auth.signOut();
@@ -146,6 +147,7 @@ class _MainScreenState extends State<MainScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        //TODO: FELIPE´S TASK
                         children: [
                           Text(
                             "Código animal: ${animalData["code"]}",
@@ -163,6 +165,7 @@ class _MainScreenState extends State<MainScreen> {
                           const SizedBox(
                             height: 20,
                           ),
+                          //TODO: REVIEW
                           Text(
                             "Ternero: ${codeTernero.values.first} \n Fecha de nacimiento ternero: ${codeTernero.keys.first}",
                             style: kSubTextWhite,
@@ -286,7 +289,26 @@ class _MainScreenState extends State<MainScreen> {
                                 width: 20,
                               ),
                               Cbuttons(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(context, "UpdateScreen",
+                                      arguments: <String, dynamic>{
+                                        "code": animalData["code"],
+                                        "partos": animalData["NumeroPartos"],
+                                        "entrance": animalData["FechaIngreso"],
+                                        "calf": codeTernero,
+                                        "calfBornDate":
+                                            animalData["fechaParto"].first,
+                                        "pregnancyDays": calculatePregnant(
+                                            int.parse(animalData["díasEmbarazo"]
+                                                .toString()),
+                                            animalData["visitaMédico"]
+                                                .toString()),
+                                        "medicVisit": animalData["visitaMédico"]
+                                            .toString(),
+                                        "motherCode": null,
+                                        "calfSex": null,
+                                      });
+                                },
                                 backgroundColor: Colors.green,
                                 child: const Text(
                                   "Actualizar datos",
@@ -489,7 +511,21 @@ class _MainScreenState extends State<MainScreen> {
                                 width: 20,
                               ),
                               Cbuttons(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(context, "UpdateScreen",
+                                      arguments: <String, dynamic>{
+                                        "code": animalData["code"],
+                                        "partos": null,
+                                        "entrance": animalData["FechaIngreso"],
+                                        "calf": null,
+                                        "calfBornDate": null,
+                                        "pregnancyDays": null,
+                                        "medicVisit": animalData["visitaMédico"]
+                                            .toString(),
+                                        "motherCode": animalData["codigoMadre"],
+                                        "calfSex": animalData["sexoTernero"],
+                                      });
+                                },
                                 backgroundColor: Colors.green,
                                 child: const Text(
                                   "Actualizar datos",
@@ -527,61 +563,179 @@ class _MainScreenState extends State<MainScreen> {
                   textScaleFactor: .9,
                   textAlign: TextAlign.start,
                 ),
+                Text(
+                  "Fecha de ingreso: ${animalData["FechaIngreso"]}",
+                  style: kSubTextWhite,
+                  textScaleFactor: .9,
+                  textAlign: TextAlign.start,
+                ),
               ],
               onPressed: () {
                 Alert(
-                    context: context,
-                    title: "Eliminar animal",
-                    desc: "¿Desea eliminar este animal?",
-                    style: AlertStyle(
-                      alertPadding: const EdgeInsets.all(10),
-                      isCloseButton: false,
-                      overlayColor: kGrey.withOpacity(0.5),
-                      backgroundColor: kGrey,
-                      alertBorder: const ContinuousRectangleBorder(
-                        side: BorderSide(color: kRed, width: 3),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                          topLeft: Radius.circular(15),
-                        ),
+                  title: "Descripción general",
+                  style: AlertStyle(
+                    alertPadding: const EdgeInsets.all(10),
+                    isCloseButton: false,
+                    isButtonVisible: false,
+                    overlayColor: kGrey.withOpacity(0.5),
+                    backgroundColor: kGrey,
+                    alertBorder: const ContinuousRectangleBorder(
+                      side: BorderSide(color: kRed, width: 3),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                        topLeft: Radius.circular(15),
                       ),
-                      titleStyle: kSubTextWhite,
-                      descStyle: kSubTextWhite,
                     ),
-                    buttons: [
-                      DialogButton(
-                        radius: BorderRadius.circular(15),
-                        onPressed: () async {
-                          Navigator.of(context).pop();
-                        },
-                        color: kRed,
-                        child: const Text(
-                          "Cancelar",
-                          style: kSubTextWhite,
-                        ),
+                    titleStyle: kSubTextWhite,
+                    descStyle: kSubTextWhite,
+                  ),
+                  content: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Código animal: ${animalData["code"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Tipo de animal: ${animalData["tipoAnimal"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Fecha de ingreso: ${animalData["FechaIngreso"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                            textAlign: TextAlign.start,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Ultima visita médico: ${animalData["visitaMédico"]}",
+                            style: kSubTextWhite,
+                            textScaleFactor: .9,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Cbuttons(
+                                onPressed: () {
+                                  Alert(
+                                      context: context,
+                                      title: "Eliminar animal",
+                                      desc: "¿Desea eliminar este animal?",
+                                      style: AlertStyle(
+                                        alertPadding: const EdgeInsets.all(10),
+                                        isCloseButton: false,
+                                        overlayColor: kGrey.withOpacity(0.5),
+                                        backgroundColor: kGrey,
+                                        alertBorder:
+                                            const ContinuousRectangleBorder(
+                                          side:
+                                              BorderSide(color: kRed, width: 3),
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(15),
+                                            bottomRight: Radius.circular(15),
+                                            topRight: Radius.circular(15),
+                                            topLeft: Radius.circular(15),
+                                          ),
+                                        ),
+                                        titleStyle: kSubTextWhite,
+                                        descStyle: kSubTextWhite,
+                                      ),
+                                      buttons: [
+                                        DialogButton(
+                                          radius: BorderRadius.circular(15),
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                          },
+                                          color: kRed,
+                                          child: const Text(
+                                            "Cancelar",
+                                            style: kSubTextWhite,
+                                          ),
+                                        ),
+                                        DialogButton(
+                                          radius: BorderRadius.circular(15),
+                                          onPressed: () async {
+                                            await ref
+                                                .child(userUID)
+                                                .child("RegistroAnimales")
+                                                .child(animalData["code"]
+                                                    .toString())
+                                                .remove()
+                                                .then((value) {
+                                              Navigator.of(context).pop();
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                          color: Colors.green,
+                                          child: const Text(
+                                            "Aceptar",
+                                            style: kSubTextWhite,
+                                          ),
+                                        ),
+                                      ]).show();
+                                },
+                                backgroundColor: kRed,
+                                child: const Icon(
+                                  Icons.delete_forever_rounded,
+                                  size: 45,
+                                  color: kWhite,
+                                ),
+                                padding: 5,
+                                borderRadius: 25,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Cbuttons(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, "UpdateScreen",
+                                      arguments: <String, dynamic>{
+                                        "code": animalData["code"],
+                                        "partos": null,
+                                        "entrance": animalData["FechaIngreso"],
+                                        "calf": null,
+                                        "calfBornDate": null,
+                                        "pregnancyDays": null,
+                                        "medicVisit": animalData["visitaMédico"]
+                                            .toString(),
+                                        "motherCode": null,
+                                        "calfSex": null,
+                                      });
+                                },
+                                backgroundColor: Colors.green,
+                                child: const Text(
+                                  "Actualizar datos",
+                                  style: kSubTextWhite,
+                                ),
+                                padding: 15,
+                                borderRadius: 25,
+                              )
+                            ],
+                          )
+                        ],
                       ),
-                      DialogButton(
-                        radius: BorderRadius.circular(15),
-                        onPressed: () async {
-                          await ref
-                              .child(userUID)
-                              .child("RegistroAnimales")
-                              .child(animalData["code"].toString())
-                              .remove()
-                              .then((value) {
-                            Navigator.of(context).pop();
-                          });
-                          Navigator.of(context).pop();
-                        },
-                        color: Colors.green,
-                        child: const Text(
-                          "Aceptar",
-                          style: kSubTextWhite,
-                        ),
-                      ),
-                    ]).show();
+                    ),
+                  ),
+                  context: context,
+                ).show();
               });
           setState(() {
             listAnimals.add(animalCard);
@@ -611,7 +765,7 @@ class _MainScreenState extends State<MainScreen> {
           listAnimals.clear();
         });
         for (var value in event.snapshot.children) {
-          debugPrint("InitState: ${value.value}");
+          debugPrint("getAnimalData: ${value.value}");
           Map animalData = value.value as Map;
           if (animalData["tipoAnimal"] == "Vaca") {
             Map codeTernero = animalData["CantidadTerneros"];
@@ -670,6 +824,7 @@ class _MainScreenState extends State<MainScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          //TODO: FELIPE´S TASK
                           children: [
                             Text(
                               "Código animal: ${animalData["code"]}",
@@ -687,6 +842,7 @@ class _MainScreenState extends State<MainScreen> {
                             const SizedBox(
                               height: 20,
                             ),
+                            //TODO: REVIEW
                             Text(
                               "Ternero: ${codeTernero.values.first} \n Fecha de nacimiento ternero: ${codeTernero.keys.first}",
                               style: kSubTextWhite,
@@ -811,7 +967,29 @@ class _MainScreenState extends State<MainScreen> {
                                   width: 20,
                                 ),
                                 Cbuttons(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "UpdateScreen",
+                                        arguments: <String, dynamic>{
+                                          "code": animalData["code"],
+                                          "partos": animalData["NumeroPartos"],
+                                          "entrance":
+                                              animalData["FechaIngreso"],
+                                          "calf": codeTernero,
+                                          "calfBornDate":
+                                              animalData["fechaParto"].first,
+                                          "pregnancyDays": calculatePregnant(
+                                              int.parse(
+                                                  animalData["díasEmbarazo"]
+                                                      .toString()),
+                                              animalData["visitaMédico"]
+                                                  .toString()),
+                                          "medicVisit":
+                                              animalData["visitaMédico"]
+                                                  .toString(),
+                                          "motherCode": null,
+                                          "calfSex": null,
+                                        });
+                                  },
                                   backgroundColor: Colors.green,
                                   child: const Text(
                                     "Actualizar datos",
@@ -1015,7 +1193,24 @@ class _MainScreenState extends State<MainScreen> {
                                   width: 20,
                                 ),
                                 Cbuttons(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "UpdateScreen",
+                                        arguments: <String, dynamic>{
+                                          "code": animalData["code"],
+                                          "partos": null,
+                                          "entrance":
+                                              animalData["FechaIngreso"],
+                                          "calf": null,
+                                          "calfBornDate": null,
+                                          "pregnancyDays": null,
+                                          "medicVisit":
+                                              animalData["visitaMédico"]
+                                                  .toString(),
+                                          "motherCode":
+                                              animalData["codigoMadre"],
+                                          "calfSex": animalData["sexoTernero"],
+                                        });
+                                  },
                                   backgroundColor: Colors.green,
                                   child: const Text(
                                     "Actualizar datos",
@@ -1053,61 +1248,182 @@ class _MainScreenState extends State<MainScreen> {
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
                   ),
+                  Text(
+                    "Fecha de ingreso: ${animalData["FechaIngreso"]}",
+                    style: kSubTextWhite,
+                    textScaleFactor: .9,
+                    textAlign: TextAlign.start,
+                  ),
                 ],
                 onPressed: () {
                   Alert(
-                      context: context,
-                      title: "Eliminar animal",
-                      desc: "¿Desea eliminar este animal?",
-                      style: AlertStyle(
-                        alertPadding: const EdgeInsets.all(10),
-                        isCloseButton: false,
-                        overlayColor: kGrey.withOpacity(0.5),
-                        backgroundColor: kGrey,
-                        alertBorder: const ContinuousRectangleBorder(
-                          side: BorderSide(color: kRed, width: 3),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            bottomRight: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                            topLeft: Radius.circular(15),
-                          ),
+                    title: "Descripción general",
+                    style: AlertStyle(
+                      alertPadding: const EdgeInsets.all(10),
+                      isCloseButton: false,
+                      isButtonVisible: false,
+                      overlayColor: kGrey.withOpacity(0.5),
+                      backgroundColor: kGrey,
+                      alertBorder: const ContinuousRectangleBorder(
+                        side: BorderSide(color: kRed, width: 3),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                          topLeft: Radius.circular(15),
                         ),
-                        titleStyle: kSubTextWhite,
-                        descStyle: kSubTextWhite,
                       ),
-                      buttons: [
-                        DialogButton(
-                          radius: BorderRadius.circular(15),
-                          onPressed: () async {
-                            Navigator.of(context).pop();
-                          },
-                          color: kRed,
-                          child: const Text(
-                            "Cancelar",
-                            style: kSubTextWhite,
-                          ),
+                      titleStyle: kSubTextWhite,
+                      descStyle: kSubTextWhite,
+                    ),
+                    content: Center(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Código animal: ${animalData["code"]}",
+                              style: kSubTextWhite,
+                              textScaleFactor: .9,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Tipo de animal: ${animalData["tipoAnimal"]}",
+                              style: kSubTextWhite,
+                              textScaleFactor: .9,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Fecha de ingreso: ${animalData["FechaIngreso"]}",
+                              style: kSubTextWhite,
+                              textScaleFactor: .9,
+                              textAlign: TextAlign.start,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Ultima visita médico: ${animalData["visitaMédico"]}",
+                              style: kSubTextWhite,
+                              textScaleFactor: .9,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Cbuttons(
+                                  onPressed: () {
+                                    Alert(
+                                        context: context,
+                                        title: "Eliminar animal",
+                                        desc: "¿Desea eliminar este animal?",
+                                        style: AlertStyle(
+                                          alertPadding:
+                                              const EdgeInsets.all(10),
+                                          isCloseButton: false,
+                                          overlayColor: kGrey.withOpacity(0.5),
+                                          backgroundColor: kGrey,
+                                          alertBorder:
+                                              const ContinuousRectangleBorder(
+                                            side: BorderSide(
+                                                color: kRed, width: 3),
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(15),
+                                              bottomRight: Radius.circular(15),
+                                              topRight: Radius.circular(15),
+                                              topLeft: Radius.circular(15),
+                                            ),
+                                          ),
+                                          titleStyle: kSubTextWhite,
+                                          descStyle: kSubTextWhite,
+                                        ),
+                                        buttons: [
+                                          DialogButton(
+                                            radius: BorderRadius.circular(15),
+                                            onPressed: () async {
+                                              Navigator.of(context).pop();
+                                            },
+                                            color: kRed,
+                                            child: const Text(
+                                              "Cancelar",
+                                              style: kSubTextWhite,
+                                            ),
+                                          ),
+                                          DialogButton(
+                                            radius: BorderRadius.circular(15),
+                                            onPressed: () async {
+                                              await ref
+                                                  .child(userUID)
+                                                  .child("RegistroAnimales")
+                                                  .child(animalData["code"]
+                                                      .toString())
+                                                  .remove()
+                                                  .then((value) {
+                                                Navigator.of(context).pop();
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                            color: Colors.green,
+                                            child: const Text(
+                                              "Aceptar",
+                                              style: kSubTextWhite,
+                                            ),
+                                          ),
+                                        ]).show();
+                                  },
+                                  backgroundColor: kRed,
+                                  child: const Icon(
+                                    Icons.delete_forever_rounded,
+                                    size: 45,
+                                    color: kWhite,
+                                  ),
+                                  padding: 5,
+                                  borderRadius: 25,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Cbuttons(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "UpdateScreen",
+                                        arguments: <String, dynamic>{
+                                          "code": animalData["code"],
+                                          "partos": null,
+                                          "entrance":
+                                              animalData["FechaIngreso"],
+                                          "calf": null,
+                                          "calfBornDate": null,
+                                          "pregnancyDays": null,
+                                          "medicVisit":
+                                              animalData["visitaMédico"]
+                                                  .toString(),
+                                          "motherCode": null,
+                                          "calfSex": null,
+                                        });
+                                  },
+                                  backgroundColor: Colors.green,
+                                  child: const Text(
+                                    "Actualizar datos",
+                                    style: kSubTextWhite,
+                                  ),
+                                  padding: 15,
+                                  borderRadius: 25,
+                                )
+                              ],
+                            )
+                          ],
                         ),
-                        DialogButton(
-                          radius: BorderRadius.circular(15),
-                          onPressed: () async {
-                            await ref
-                                .child(userUID)
-                                .child("RegistroAnimales")
-                                .child(animalData["code"].toString())
-                                .remove()
-                                .then((value) {
-                              Navigator.of(context).pop();
-                            });
-                            Navigator.of(context).pop();
-                          },
-                          color: Colors.green,
-                          child: const Text(
-                            "Aceptar",
-                            style: kSubTextWhite,
-                          ),
-                        ),
-                      ]).show();
+                      ),
+                    ),
+                    context: context,
+                  ).show();
                 });
             setState(() {
               listAnimals.add(animalCard);
@@ -1146,7 +1462,6 @@ class _MainScreenState extends State<MainScreen> {
               bottomRight: Radius.circular(15),
             ),
           ),
-          //TODO: CHANGE THIS LINE TITLE "Filtrado: $textType"
           title: Text(
             filterType(),
             style: kSubTextWhite,

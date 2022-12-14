@@ -32,10 +32,22 @@ class _UpdateScreenState extends State<UpdateScreen> {
   List allTerneros = [];
   late User? currentUser;
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Object? args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    debugPrint("Update params: ${args.toString()}");
+  }
+
+  @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
-    final args = ModalRoute.of(context)!.settings.arguments;
     return WillPopScope(
       onWillPop: () {
         Navigator.pushNamed(context, "MainScreen");
