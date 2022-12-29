@@ -21,7 +21,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<Widget> listAnimals = [];
+  List<AnimalCard> listAnimals = [];
+  List<AnimalCard> searchListAnimals = [];
   String textType = "code";
   final _auth = FirebaseAuth.instance;
   DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -33,6 +34,7 @@ class _MainScreenState extends State<MainScreen> {
   final partosCodeController = TextEditingController();
   final momCodeController = TextEditingController();
   final sexCodeController = TextEditingController();
+  final searchCodeController = TextEditingController();
   final terneroController = TextEditingController();
   final embarazoController = TextEditingController();
   String dateCow = "";
@@ -40,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   String partoDate = "";
   String dateTernero = "Sin ternero";
   String animalType = "Vaca";
+  bool searchBar = false;
   List<String> listOfAnimals = ["Toro", "Vaca", "Ternero"];
   late User? currentUser;
 
@@ -93,6 +96,7 @@ class _MainScreenState extends State<MainScreen> {
         if (animalData["tipoAnimal"] == "Vaca") {
           Map codeTernero = animalData["CantidadTerneros"];
           final animalCard = AnimalCard(
+              code: animalData["code"].toString(),
               color: kGrey,
               borderRadius: 15.0,
               description: [
@@ -295,9 +299,10 @@ class _MainScreenState extends State<MainScreen> {
                                         "code": animalData["code"],
                                         "partos": animalData["NumeroPartos"],
                                         "entrance": animalData["FechaIngreso"],
-                                        "calf": codeTernero,
-                                        "calfBornDate":
-                                            animalData["fechaParto"].first,
+                                        "calf": codeTernero.values.first,
+                                        "calfBornDate": animalData["fechaParto"]
+                                            .first
+                                            .toString(),
                                         "pregnancyDays": calculatePregnant(
                                             int.parse(animalData["díasEmbarazo"]
                                                 .toString()),
@@ -331,6 +336,7 @@ class _MainScreenState extends State<MainScreen> {
           });
         } else if (animalData["tipoAnimal"] == "Ternero") {
           final animalCard = AnimalCard(
+              code: animalData["code"].toString(),
               color: kGrey,
               borderRadius: 15.0,
               description: [
@@ -548,6 +554,7 @@ class _MainScreenState extends State<MainScreen> {
           });
         } else {
           final animalCard = AnimalCard(
+              code: animalData["code"].toString(),
               color: kGrey,
               borderRadius: 15.0,
               description: [
@@ -564,7 +571,7 @@ class _MainScreenState extends State<MainScreen> {
                   textAlign: TextAlign.start,
                 ),
                 Text(
-                  "Fecha de ingreso: ${animalData["FechaIngreso"]}",
+                  "Ingreso: ${animalData["FechaIngreso"]}",
                   style: kSubTextWhite,
                   textScaleFactor: .9,
                   textAlign: TextAlign.start,
@@ -770,6 +777,7 @@ class _MainScreenState extends State<MainScreen> {
           if (animalData["tipoAnimal"] == "Vaca") {
             Map codeTernero = animalData["CantidadTerneros"];
             final animalCard = AnimalCard(
+                code: animalData["code"].toString(),
                 color: kGrey,
                 borderRadius: 15.0,
                 description: [
@@ -1012,6 +1020,7 @@ class _MainScreenState extends State<MainScreen> {
             });
           } else if (animalData["tipoAnimal"] == "Ternero") {
             final animalCard = AnimalCard(
+                code: animalData["code"].toString(),
                 color: kGrey,
                 borderRadius: 15.0,
                 description: [
@@ -1233,6 +1242,7 @@ class _MainScreenState extends State<MainScreen> {
             });
           } else {
             final animalCard = AnimalCard(
+                code: animalData["code"].toString(),
                 color: kGrey,
                 borderRadius: 15.0,
                 description: [
@@ -1249,7 +1259,7 @@ class _MainScreenState extends State<MainScreen> {
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "Fecha de ingreso: ${animalData["FechaIngreso"]}",
+                    "Ingreso: ${animalData["FechaIngreso"]}",
                     style: kSubTextWhite,
                     textScaleFactor: .9,
                     textAlign: TextAlign.start,
@@ -1500,8 +1510,92 @@ class _MainScreenState extends State<MainScreen> {
               Center(
                 child: SingleChildScrollView(
                   child: Column(
-                    children: listAnimals,
+                    children: searchCodeController.value.text == ""
+                        ? listAnimals
+                        : searchListAnimals,
                   ),
+                ),
+              ),
+              Visibility(
+                visible: searchBar,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 5.0,
+                          top: 15.0,
+                          right: 5,
+                        ),
+                        child: Material(
+                          elevation: 15.0,
+                          color: kWhite,
+                          borderRadius: BorderRadius.circular(15),
+                          child: TextField(
+                            textAlign: TextAlign.center,
+                            style: kSubTextBlack,
+                            controller: searchCodeController,
+                            //keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                              hintText: "Buscar animal",
+                              hintStyle: kSubTextBlack,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15),
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: kWhite, width: 2.0),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: kWhite, width: 2.0),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15),
+                                ),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                searchListAnimals.clear();
+                                for (AnimalCard animal in listAnimals) {
+                                  if (animal.code.contains(value)) {
+                                    searchListAnimals.add(animal);
+                                  }
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 15.0, right: 5.0),
+                      child: Cbuttons(
+                          onPressed: () {
+                            setState(() {
+                              searchBar = !searchBar;
+                              searchListAnimals.clear();
+                            });
+                          },
+                          backgroundColor: kRed,
+                          child: const Text(
+                            "Cerrar",
+                            style: kSubTextWhite,
+                          ),
+                          padding: 13,
+                          borderRadius: 15.0),
+                    )
+                  ],
                 ),
               ),
               Visibility(
@@ -2450,9 +2544,15 @@ class _MainScreenState extends State<MainScreen> {
                 setState(() {
                   addButton = !addButton;
                   menuButton = !menuButton;
+                  searchBar = !searchBar;
                 });
               },
-              onPressSecond: () {}),
+              onPressSecond: () {
+                setState(() {
+                  searchBar = !searchBar;
+                  searchListAnimals.clear();
+                });
+              }),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),

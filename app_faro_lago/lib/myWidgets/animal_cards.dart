@@ -5,13 +5,15 @@ class AnimalCard extends StatelessWidget {
   final Color color;
   final double borderRadius;
   final VoidCallback onPressed;
+  final String code;
   final List<Widget> description;
   const AnimalCard(
       {Key? key,
       required this.color,
       required this.borderRadius,
       required this.onPressed,
-      required this.description})
+      required this.description,
+      required this.code})
       : super(key: key);
 
   @override
@@ -21,8 +23,8 @@ class AnimalCard extends StatelessWidget {
       child: Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
-        elevation: 20,
-        color: kGrey,
+        elevation: 10,
+        color: color,
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Row(
